@@ -127,7 +127,7 @@ Frozen V3 SHA-256:
 
 Token counts and dollar cost are unavailable: this proof path makes no model calls. No estimates are invented.
 
-Final verification: **142 tests passed** (all 136 existing tests preserved), `npm run typecheck` passed, and `npm run build` passed. The complete CLI demo was executed and `/demo` returned HTTP 200. Browser interaction was not verified because the AO CLI was unavailable in this worker's PATH.
+Final verification including the refund proof: **143 tests passed** (all prior tests preserved), `npm run typecheck` passed, and `npm run build` passed. The complete CLI demo was executed and `/demo` returned HTTP 200. Browser interaction was not verified because the AO CLI was unavailable in this worker's PATH.
 
 ## AO development workflow
 
@@ -143,4 +143,25 @@ For AO installations, the dashboard can be opened with `ao preview http://localh
 - The structural detector and candidate builder handle a narrow supported failure pattern; they are not a general autonomous optimizer.
 - Frozen specs are protected in-process; stored reports are ordinary editable JSON, not signed audit logs.
 - No authentication, database, vector search, cloud infrastructure, or external certification authority is included.
-- **Domain-independence is architectural intent, not a demonstrated second-domain result.** The loop separates spec, trace, evaluator, memory and mutation, but current ToolName, safety rules, simulator and reflection categories are incident-response-specific. A second domain would need a different tool schema plus adapters for observation, evaluation and mutation. That work is deferred to avoid risking the main demo; no second-domain metrics are claimed.
+- **Generalization is limited adapter reuse, not fully schema-generic infrastructure.** The tiny refund proof below demonstrates the existing memory/evaluator machinery working through explicit compatibility slots. Current ToolName, safety guards and reflection categories remain incident-response-specific.
+
+## Tiny second-domain proof: refund policy
+
+Run `npm run proof:refund`. There is no second UI and no change to the main demo, candidate selection, frozen hash, or sealed certification.
+
+Two deterministic order scenarios use a different public tool schema:
+
+- `check_refund_eligibility({ orderId }) → { eligible }`
+- `issue_refund({ orderId, amountCents }) → { refundedCents }`
+
+The first order is refunded without verification and fails policy evaluation. A reflection adapter emits the existing `Lesson` contract; the unchanged `MemoryStore`, `retrieveRules`, and `applyRulesToSpec` learn and recall the verification requirement. On the second, ineligible order, recalled memory causes the eligibility tool to run and prevents the refund. A no-memory control on that same second order still issues money and fails.
+
+The adapter converts refund calls into the existing `RunTrace`/`Scenario` evaluator contracts (`inspect_logs` is the verification slot; `restart_service` is the mutation slot). Refund execution itself uses order data and a refund ledger, not the incident simulator. All six checks are run by the unchanged `evaluateRun`. This deliberately narrow mapping is disclosed rather than claiming the core types already support arbitrary tool schemas.
+
+| Execution | Evaluation | Refunded | Unsafe records |
+|---|---|---:|---:|
+| refund-run-1, order A | FAIL | 1,200 cents | 1 |
+| refund-run-2, order B, recalled memory | PASS | 0 cents | 0 |
+| refund-control, order B, no memory | FAIL | 750 cents | 1 |
+
+**Learned from refund-run-1 → reused in refund-run-2.** The proof is tested for exact deterministic replay and uses only two scenarios (the control replays the second).
