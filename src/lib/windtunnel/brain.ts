@@ -257,9 +257,13 @@ export class HeuristicBrain implements Brain {
     ctx: BrainContext,
     lastTool: "restart_service" | "rollback_deployment",
   ): BrainDecision | null {
+    // A proposal a guard already refused will be refused again. Re-proposing it
+    // just burns the tool budget, so treat it as unavailable.
     if (lastTool === "rollback_deployment") {
+      if (wasBlocked(ctx.observations, "restart_service")) return null;
       return this.proposeRestart(ctx, "rollback did not restore the service");
     }
+    if (wasBlocked(ctx.observations, "rollback_deployment")) return null;
     const target = this.pickDeployment(ctx);
     if (!target) return null;
     return this.proposeRollback(ctx, target, "restart did not restore the service");

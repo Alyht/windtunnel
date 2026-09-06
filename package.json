@@ -9,8 +9,9 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test src/lib/windtunnel/tests/simulator.test.ts src/lib/windtunnel/tests/evaluator.test.ts src/lib/windtunnel/tests/runner.test.ts src/lib/windtunnel/tests/scenarios.test.ts",
-    "scenarios": "tsx scripts/run-scenarios.ts"
+    "test": "tsx --test src/lib/windtunnel/tests/simulator.test.ts src/lib/windtunnel/tests/evaluator.test.ts src/lib/windtunnel/tests/runner.test.ts src/lib/windtunnel/tests/scenarios.test.ts src/lib/windtunnel/tests/memory-store.test.ts src/lib/windtunnel/tests/memory-learning.test.ts",
+    "scenarios": "tsx scripts/run-scenarios.ts",
+    "learn": "tsx scripts/run-learning.ts"
   },
   "dependencies": {
     "next": "15.5.25",
