@@ -1,0 +1,113 @@
+:root {
+  color-scheme: dark;
+  --bg: #0b0d10;
+  --panel: #14181d;
+  --border: #262c34;
+  --text: #e6e9ee;
+  --muted: #8b95a3;
+  --pass: #4ade80;
+  --fail: #f87171;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 2rem 1.5rem 4rem;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+main {
+  max-width: 68rem;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 1.4rem;
+  margin: 0 0 0.25rem;
+}
+
+.tagline {
+  color: var(--muted);
+  margin: 0 0 2rem;
+}
+
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  border: 1px solid var(--border);
+  background: var(--panel);
+}
+
+.summary div span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.summary div strong {
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.scenario {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.scenario header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.verdict {
+  font-weight: 700;
+}
+
+.pass {
+  color: var(--pass);
+}
+
+.fail {
+  color: var(--fail);
+}
+
+.meta,
+.desc {
+  color: var(--muted);
+  margin: 0.25rem 0;
+}
+
+ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.1rem;
+}
+
+li {
+  margin: 0.15rem 0;
+}
+
+li.ok {
+  color: var(--muted);
+}
+
+li.bad {
+  color: var(--fail);
+}
+
+code {
+  color: var(--text);
+}
