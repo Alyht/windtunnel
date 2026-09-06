@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { FinalDemoResult } from "@/lib/windtunnel/final/demo";
 import type { RunTrace } from "@/lib/windtunnel/types";
 import styles from "./demo.module.css";
+import LiveRun from "./LiveRun";
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +37,7 @@ export default async function DemoPage() {
   return <main className={styles.demo}>
     <nav className={styles.nav} aria-label="Demo navigation">
       <Link href="/demo" className={styles.brand}><span className={styles.mark} aria-hidden="true"><i /><i /><i /></span>WINDTUNNEL</Link>
-      <div><span className={styles.liveDot} />EXECUTED PROOF<span className={styles.navDivider}>/</span><Link href="/">Explore raw runs ↗</Link></div>
+      <div><span className={styles.liveDot} />LIVE + EXECUTED PROOF<span className={styles.navDivider}>/</span><Link href="/traces">Explore raw runs ↗</Link></div>
     </nav>
 
     <header className={styles.hero}>
@@ -44,11 +45,14 @@ export default async function DemoPage() {
       <h1>We crash AI agents<br /><span>before your users do.</span></h1>
       <p className={styles.subtitle}>AI agents shouldn&apos;t make the same mistake twice.</p>
       <p className={styles.heroCopy}>Turn dangerous mistakes into reusable memory and safer agent specs.<br className={styles.desktopBreak} /> Then test the repair. If it still fails, we don&apos;t ship it.</p>
-      <div className={styles.heroActions}><a className={styles.cta} href="#executed-run">View executed run <span aria-hidden="true">↗</span></a>
-        <span className={styles.ctaNote}>Real traces. Real failures.<br />No rerun. No fabricated scores.</span></div>
+      <div className={styles.heroActions}><a href="#live-run">Try a fresh AI-agent run ↓</a><a href="#executed-proof">View reproducible proof ↓</a></div>
       <div className={styles.heroRail} aria-hidden="true"><span>CRASH</span><i /><span>LEARN</span><i /><span>REPAIR</span><i /><span>VERIFY</span></div>
     </header>
 
+    <LiveRun />
+    <section id="executed-proof" className={styles.sectionHeading} aria-label="Executed proof benchmark">
+      <div><p className={styles.eyebrow}>EXECUTED PROOF</p><h2>A reproducible benchmark run committed with the project.</h2></div>
+    </section>
     <section className={styles.metrics} aria-label="Executed results summary">
       <article className={`${styles.metricCard} ${styles.baselineCard}`}><div className={styles.cardLabel}><span>01 / BASELINE</span><span>V1</span></div>
         <div className={styles.metricValue}>{baseline.passed}<span>/{baseline.total}</span><small>success</small></div>

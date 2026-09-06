@@ -8,7 +8,7 @@ export default async function StructuralPage() {
   const guard = result.regression;
   return <main>
     <h1>WINDTUNNEL — structural engineering</h1>
-    <p><Link href="/">V1 runs</Link> · <Link href="/memory">Learning memory</Link></p>
+    <p><Link href="/traces">V1 runs</Link> · <Link href="/memory">Learning memory</Link></p>
     <p>{result.experiment}</p>
     <h2>Structural mutation: {result.mutation.type}</h2>
     <p>{result.mutation.reason}</p>

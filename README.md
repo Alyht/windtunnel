@@ -18,7 +18,7 @@ npm run demo
 npm run dev
 ```
 
-Open **http://localhost:3000/demo** for the complete dashboard. The home page retains the original V1 baseline and links to the final demo.
+Open **http://localhost:3000/**; it redirects to `/demo`. The original V1 technical page is preserved at `/traces`.
 
 `npm run demo` executes the complete path and writes `artifacts/final-demo.json`. A real executed record is committed so the dashboard works immediately. The dashboard reads that record; page refreshes do **not** rerun sealed certification. Running the CLI again starts a new independent experiment and replaces the record; it does not resume or retune the previous frozen candidate.
 
@@ -35,7 +35,35 @@ npm run build
 npm run start              # Production server after build
 ```
 
-The `/memory` and `/structural` pages retain their existing behavior. Optional TensorMux configuration is described in `.env.example`; the final proof path uses the deterministic heuristic, not an LLM.
+The `/memory` and `/structural` pages retain their existing behavior. TensorMux configuration is described in `.env.example`; the committed proof path uses the deterministic heuristic, not an LLM. The separate live button always requires the real provider.
+
+## Try a live AI agent in the browser
+
+Above the unchanged **EXECUTED PROOF** dashboard, **LIVE RUN** is a fresh AI-agent execution. Click **RUN WINDTUNNEL** to send one `POST /api/demo/run`. The disabled button displays “Running live agent…” while actual tool-call/result events stream over an ordinary HTTP response (NDJSON, no websocket, no synthetic pacing).
+
+Configure these **server-side** environment variables, locally in the git-ignored `.env.local` or in Vercel's project Environment Variables:
+
+```text
+TENSORMUX_API_KEY=<your server-side key>
+TENSORMUX_BASE_URL=https://api.tensormux.com/v1
+TENSORMUX_MODEL=glm-4-7-flash
+```
+
+Never use a `NEXT_PUBLIC_` prefix for these secrets. Never paste the key into the browser. Restart the local server or redeploy after configuring environment variables. Missing credentials return a clear 503 configuration error; provider failure/timeout is shown as a live error, never a heuristic fallback or fabricated result.
+
+The endpoint uses the existing `LlmBrain` and `TensorMuxClient`, V1 AgentSpec, runner, simulated tools and deterministic evaluator on one existing development incident. It composes the existing context probe, memory retrieval/spec application, reflector and `MemoryStore` without changing their implementations. Each request starts with empty ephemeral memory; retrieval therefore honestly reports no recalled rules. Any lessons produced by that fresh execution are ingested into request-local memory and displayed, then discarded. This is not cross-request persistent learning.
+
+The browser shows a unique live run ID, incident, real tool arguments/results in order, final action, all evaluator checks, unsafe actions, lessons and measured wall-clock latency. Fixed simulated tool latency is separately labelled. Model decisions are live; production is still simulated. Provider error bodies and credentials are not sent to the browser.
+
+**A single live PASS does not authorize promotion.** The UI reports the incident verdict separately from `PROMOTION BLOCKED`: this request does not rerun candidate comparison, Regression Guard, or sealed certification. It never changes `artifacts/final-demo.json`, the frozen winner, or any committed metrics.
+
+### Vercel deployment
+
+Use the existing Next.js framework preset with `npm run build`, and configure the three environment variables above. The live route uses the Node.js runtime with `maxDuration = 120`; choose a deployment plan that supports that duration. Model waits are bounded to 25 seconds per decision and 90 seconds for the run. The unchanged provider transport may finish an in-flight request after timeout/cancellation, but no further simulated tools are executed for that decision.
+
+No live request requires writable project storage. The benchmark JSON is explicitly included in Next.js output-file tracing for `/demo`. The endpoint has same-origin browser checks and best-effort one-active-run protection per warm instance, not distributed rate limiting or authentication. Apply provider-side quotas for a publicly exposed demo. No new dependencies are needed.
+
+Live-path tests use explicitly mocked provider responses to exercise the real LLM parser/runner, streaming route, unsafe choices, ephemeral lessons, secret-safe failures, unique runs and timeouts. Those are integration tests—not evidence of a successful external model call. This worker had no `TENSORMUX_API_KEY`, so external-provider and browser-button success could not be verified here.
 
 ## Architecture
 
@@ -127,7 +155,7 @@ Frozen V3 SHA-256:
 
 Token counts and dollar cost are unavailable: this proof path makes no model calls. No estimates are invented.
 
-Final verification including the refund proof: **143 tests passed** (all prior tests preserved), `npm run typecheck` passed, and `npm run build` passed. The complete CLI demo was executed and `/demo` returned HTTP 200. Browser interaction was not verified because the AO CLI was unavailable in this worker's PATH.
+Verification including the refund proof and live-path integration tests: **149 tests passed** (all prior tests preserved), `npm run typecheck` passed, and `npm run build` passed. Production smoke checks confirmed `/` redirects to `/demo` with HTTP 307, `/demo` and `/traces` return HTTP 200, and the unconfigured live endpoint returns a clear HTTP 503 instead of a fallback. The previously executed benchmark artifact is byte-for-byte unchanged. External TensorMux execution was not verified because no API key was available; browser interaction was not verified because the AO CLI was unavailable in this worker's PATH.
 
 ## AO development workflow
 

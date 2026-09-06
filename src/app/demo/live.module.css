@@ -1,0 +1,28 @@
+.live { margin: 0 0 38px; padding: 28px; border: 1px solid #41745a; border-radius: 12px; background: linear-gradient(130deg,#162b24,#101920); scroll-margin-top: 24px; }
+.header { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.label { color: #91efc5; font-size: 10px; font-weight: 700; letter-spacing: 2px; }
+.header h2 { margin: 7px 0!important; font-size: 26px!important; }
+.header p { color: #bfd4c8; font-size: 14px; }
+.run { display: inline-flex; align-items: center; gap: 24px; background: #91efc5; color: #102b23; border: 0; border-radius: 7px; padding: 17px 23px; font: 700 14px Arial,sans-serif; cursor: pointer; }
+.run:disabled { opacity: .65; cursor: wait; }
+.run:focus-visible, .live summary:focus-visible { outline: 2px solid #e2fff0; outline-offset: 5px; }
+.run span { font-size: 22px; }
+.note { color: #9caeb9; font-size: 12px; line-height: 1.8; margin-top: 12px!important; overflow-wrap: anywhere; }
+.status { color: #b1e6c8; font-size: 13px; margin-top: 12px; }
+.incident { border-top: 1px solid #345444; margin-top: 22px; padding-top: 20px; }
+.incident h3 { margin: 8px 0!important; }
+.calls { list-style: none; padding: 0; margin: 20px 0; }
+.calls>li { border-left: 2px solid #53866a; padding: 14px 18px; margin: 0 0 12px; background: #101a21; border-radius: 0 7px 7px 0; }
+.callTitle { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.callTitle>span { color: #80b493; font-size: 12px; }
+.callTitle>b { margin-left: auto; font-size: 9px; letter-spacing: 1px; color: #bec9b8; }
+.live summary { cursor: pointer; font-size: 12px; color: #b2c5d0; padding: 10px 0 0; }
+.live pre { max-height: 220px!important; font-size: 11px!important; }
+.error { border: 1px solid #8c4f51; background: #2a1c22; padding: 18px; border-radius: 7px; margin-top: 18px; color: #ffb2af; font-size: 13px; }
+.error p { margin-top: 9px!important; }
+.verdict { border-top: 1px solid #3c5b47; margin-top: 25px; padding-top: 20px; font-size: 13px; }
+.verdict h3 { margin: 18px 0 12px!important; }
+.verdict p { margin-top: 10px!important; }
+.verdict ul { line-height: 1.9; color: #c3d1dc; }
+.verdict small { display: block; color: #8ca49e; }
+@media(max-width:640px) { .live { padding: 20px; } .header { align-items: stretch; flex-direction: column; } .run { justify-content: space-between; } .callTitle strong { font-size: 13px; } }
