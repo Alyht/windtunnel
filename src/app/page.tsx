@@ -11,6 +11,7 @@ export default async function Page() {
     <main>
       <h1>WINDTUNNEL</h1>
       <p className="tagline">Agents shouldn&apos;t make the same mistake twice.</p>
+      <p><a href="/demo">Open the complete executed demo →</a></p>
 
       <section className="summary">
         <div>
